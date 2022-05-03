@@ -1,0 +1,25 @@
+課題2
+https://airtable.com/tblg8ePOEQRDtIGiY/viwV3pAlEvPOOgmHF/recEM4COzMtz03WWs?blocks=hide
+
+回答1
+curl http://httpbin.org/headers -H 'X-Test:hello'
+
+回答2
+curl https://httpbin.org/post -X POST -H "Content-type: application/json" -d '{"name": "hoge"}'
+
+回答3
+curl https://httpbin.org/post -X POST -H "Content-type: application/json" -d '{userA: {name: "hoge", age: 29}}'
+
+回答4
+curl https://httpbin.org/post -X POST -H "Content-type: application/x-www-form-urlencoded" -d '{"name": "hoge"}'
+
+クイズ
+・curl利用時のUser-Agentのデフォルト値とその変更方法
+・postmanでステータスコードが200であることを確かめるテストコード
+
+参考
+https://curl.se/
+https://learning.postman.com/
+https://news.mynavi.jp/itsearch/article/hardware/2786
+https://www.webprofessional.jp/master-api-workflow-postman/
+https://qiita.com/yasuhiroki/items/a569d3371a66e365316f

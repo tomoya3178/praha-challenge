@@ -1,0 +1,16 @@
+課題1
+https://airtable.com/tblg8ePOEQRDtIGiY/viwV3pAlEvPOOgmHF/recHLfA8AY1MjZ2ym?blocks=hide
+
+回答1
+appディレクトリ参照
+
+回答2
+application/x-www-form-urlencoded
+クエリパラメータ形式
+
+application/json
+json文字列形式
+
+参考
+https://expressjs.com/ja/
+https://developer.mozilla.org/ja/docs/Learn/Server-side/Express_Nodejs
