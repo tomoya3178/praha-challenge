@@ -1,0 +1,44 @@
+課題
+https://airtable.com/appj4zNpELn8w279r/tblg8ePOEQRDtIGiY/viwV3pAlEvPOOgmHF/recDEEnPLUY2YJxB1?blocks=hide
+
+回答1-1
+simple requestに該当しない場合、preflight requestを送信して実際のリクエストを送信しても安全かどうかを確かめる
+レスポンスのaccess-control-allow-originにドメインが含まれていれば実際のリクエストを送信する
+
+回答1-2
+資格情報を含むリクエストの場合はワイルドカードを指定できない
+
+回答1-3
+以下の全ての条件を満たす場合
+・以下の許可されているメソッドのうちのいずれかであること
+GET
+HEAD
+POST
+・ユーザーエージェントによって自動的に設定されたヘッダーと以下のCORSセーフリストリクエストヘッダー以外のヘッダーが設定されていないこと
+Accept
+Accept-Language
+Content-Language
+Content-Type: application/x-www-form-urlencoded
+Content-Type: multipart/form-data
+Content-Type: text/plain
+・XMLHttpRequestオブジェクトを使用してリクエストを行う場合は、uploadプロパティから返されるオブジェクトにイベントリスナーが登録されていないこと
+・リクエストにReadableStreamオブジェクトが使用されていないこと
+
+回答1-4
+
+
+回答1-5
+withCredentialsプロパティをtrueにする
+
+回答2
+資格情報を含むリクエストに対するレスポンスに含まれるべきヘッダーはなんでしょうか
+
+回答3
+clientディレクトリとserverディレクトリ参照
+
+課題4（成果物に関する質問）
+CORS制約は適用される
+
+参考
+https://developer.mozilla.org/ja/docs/Web/HTTP/CORS
+https://expressjs.com/en/resources/middleware/cors.html
