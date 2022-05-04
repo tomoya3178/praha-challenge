@@ -5,7 +5,7 @@ export interface NameApiServiceInterface {
 }
 
 export class NameApiService implements NameApiServiceInterface {
-  private MAX_LENGTH = 4;
+  private readonly MAX_LENGTH = 4;
 
   async getFirstName(): Promise<string> {
     const { data: { firstName } }: { data: { firstName: string } } = await axios.get(
