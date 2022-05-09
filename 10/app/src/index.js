@@ -3,5 +3,4 @@ import { createRoot } from 'react-dom/client';
 import { Game } from './components/Game';
 import './index.css';
 
-const root = createRoot(document.getElementById("root"));
-root.render(<Game />);
+createRoot(document.getElementById("root")).render(<Game />);
