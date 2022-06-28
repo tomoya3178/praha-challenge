@@ -37,7 +37,8 @@ withCredentialsプロパティをtrueにする
 clientディレクトリとserverディレクトリ参照
 
 課題4（成果物に関する質問）
-CORS制約は適用される
+CORS制約は適用されない
+ブラウザからのリクエストのみ同一オリジンポリシーに従うため
 
 参考
 https://developer.mozilla.org/ja/docs/Web/HTTP/CORS
