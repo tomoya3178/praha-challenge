@@ -25,7 +25,7 @@ Content-Type: text/plain
 ・リクエストにReadableStreamオブジェクトが使用されていないこと
 
 回答1-4
-
+コンソールにエラーが表示される
 
 回答1-5
 withCredentialsプロパティをtrueにする
