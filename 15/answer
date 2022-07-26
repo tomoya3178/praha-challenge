@@ -1,0 +1,116 @@
+回答1-1-1
+SELECT CustomerID, COUNT(CustomerID)
+FROM Orders
+WHERE (OrderDate BETWEEN '1996-01-01' AND '1996-12-31')
+GROUP BY CustomerID
+HAVING COUNT(CustomerID) >= 3
+ORDER BY COUNT(CustomerID) DESC
+
+回答1-1-2
+
+回答1-2
+SELECT OrderID, MAX(OrderDetailCount) 
+FROM (
+	SELECT OrderID, COUNT(OrderId) AS OrderDetailCount
+  FROM OrderDetails
+	GROUP BY OrderID
+)
+
+回答1-3
+SELECT Shippers.ShipperID, COUNT(Orders.OrderID) AS ShippingCount
+FROM Shippers
+LEFT JOIN Orders ON Shippers.ShipperID=Orders.ShipperID
+GROUP BY Orders.ShipperID
+ORDER BY ShippingCount DESC
+
+回答1-4
+SELECT SUM(Products.Price * OrderDetails.Quantity) AS Sales, Country
+FROM Customers
+LEFT JOIN Orders ON Customers.CustomerID=Orders.CustomerID
+LEFT JOIN OrderDetails ON Orders.OrderID=OrderDetails.OrderID
+JOIN Products ON OrderDetails.ProductID=Products.ProductID
+GROUP BY Country
+ORDER BY Sales DESC
+
+回答1-5
+SELECT SUM(Products.Price * OrderDetails.Quantity) AS Sales, STRFTIME('%Y', Orders.OrderDate) AS OrderYear, Country
+FROM Customers
+LEFT JOIN Orders ON Customers.CustomerID=Orders.CustomerID
+LEFT JOIN OrderDetails ON Orders.OrderID=OrderDetails.OrderID
+JOIN Products ON OrderDetails.ProductID=Products.ProductID
+GROUP BY Country, OrderYear
+
+回答1-6-1
+ALTER TABLE Employees
+ADD Junior boolean
+DEFAULT false
+
+回答1-6-2
+UPDATE Employees
+SET Junior=true
+WHERE STRFTIME('%Y', BirthDate) > 1960
+
+回答1-7-1
+ALTER TABLE Shippers
+ADD LongRelation boolean
+DEFAULT false
+
+回答1-7-2
+UPDATE Shippers
+SET LongRelation=true
+WHERE ShipperID IN (
+  SELECT ShipperID
+  JOIN Orders ON Shippers.ShipperID=Orders.ShipperID
+  GROUP BY ShipperID
+  HAVING COUNT(Orders.OrderID) >= 70
+)
+
+回答1-8
+SELECT Employees.EmployeeID, LatestOrderDate
+FROM Employees
+JOIN (
+  SELECT EmployeeID, MAX(OrderDate) AS LatestOrderDate
+  FROM Orders
+  GROUP BY EmployeeID
+) AS Orders ON Employees.EmployeeID=Orders.EmployeeID
+
+回答1-9-1
+SELECT *
+FROM Customers
+WHERE CustomerName IS NULL
+
+回答1-10-1
+DELETE
+FROM Employees
+WHERE EmployeeID=1
+
+回答1-10-2
+SELECT *
+FROM Orders
+JOIN Employees ON Orders.EmployeeID=Employees.EmployeeID
+
+回答1-10-3
+SELECT *
+FROM Orders
+LEFT JOIN Employees ON Orders.EmployeeID=Employees.EmployeeID
+
+回答2-1
+Group by前にwhere句が適用され後にhaving句が適用される
+基本的にwhere句を用いた方がgroup byのコストが下がるが集計に関する条件の場合はhaving句を用いるしかない
+
+回答2-2
+DDL
+Data Definition Language
+CREATE文等データを定義する
+
+DML
+Data Manipulation Language
+SELECT文等データを操作する
+
+DCL
+Data Control Language
+GRANT文等データを制御する
+
+TCL
+Transaction Control Language
+BEGIN TRANSACTION等トランザクションを制御する
