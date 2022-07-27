@@ -124,3 +124,6 @@ GRANT文等データを制御する
 TCL
 Transaction Control Language
 BEGIN TRANSACTION等トランザクションを制御する
+
+回答3
+
