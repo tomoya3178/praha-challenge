@@ -75,6 +75,16 @@ JOIN (
 ) AS Orders ON Employees.EmployeeID=Orders.EmployeeID
 
 回答1-9-1
+UPDATE Customers
+SET CustomerName=NULL
+WHERE CustomerID=1
+
+回答1-9-2
+SELECT *
+FROM Customers
+WHERE CustomerName IS NOT NULL
+
+回答1-9-3
 SELECT *
 FROM Customers
 WHERE CustomerName IS NULL
