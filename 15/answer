@@ -126,4 +126,4 @@ Transaction Control Language
 BEGIN TRANSACTION等トランザクションを制御する
 
 回答3
-
+CustomerのCountryを一覧するクエリを作成してください
