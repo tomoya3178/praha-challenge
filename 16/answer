@@ -12,3 +12,19 @@
 
 回答1-4
 クエリ含まれる全てのカラムのインデックスが存在している状態
+
+回答2
+select * from employees where gender="M";
+
+select * from dept_emp where dept_no="d005"
+
+select * from titles where title="Staff"
+
+回答3-1
+インデックスの更新が必要になる分遅くなる
+
+回答3-2
+インデックスの更新が必要になる分遅くなる
+
+回答4
+
