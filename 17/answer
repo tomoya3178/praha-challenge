@@ -8,5 +8,6 @@
 CREATE INDEX employees_name ON employees (last_name, first_name)
 
 回答2
+CREATE INDEX employees_name ON employees (dept_no, emp_no)
 
 回答3
