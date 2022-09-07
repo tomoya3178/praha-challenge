@@ -1,24 +1,3 @@
-回答
-select *
-from employees
-join (
-  select *
-  from titles
-  join (
-    select emp_no, max(to_date) as latest_to_date
-    from titles
-    group by emp_no
-  ) as latest on titles.emp_no = latest.emp_no and titles.to_date = latest.latest_to_date
-) as latest_title on employees.emp_no = latest_title.emp_no
-
-select employees.*, titles
-from employees
-join (
-  select emp_no, GROUP_CONCAT(title) as titles
-  from titles
-  group by emp_no
-) as concat_titles on employees.emp_no = concat_titles.emp_no
-
 回答1-1
 slow_query_log=ON
 slow_query_log_file=slow_query.log
