@@ -14,11 +14,14 @@
 クエリ含まれる全てのカラムのインデックスが存在している状態
 
 回答2
-select * from employees where gender="M";
-
 select * from dept_emp where dept_no="d005"
+create index dept_no_index on dept_emp(dept_no)
 
 select * from titles where title="Staff"
+create index title_index on titles(title)
+
+select * from employees where YEAR(birth_date)=1953
+create index birth_date_index on employees(birth_date)
 
 回答3-1
 インデックスの更新が必要になる分遅くなる
@@ -27,4 +30,5 @@ select * from titles where title="Staff"
 インデックスの更新が必要になる分遅くなる
 
 回答4
-
+最若手の男性社員
+最も多い入社年度の男性社員
