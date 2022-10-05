@@ -11,5 +11,8 @@ select文にビュー名として名前を付けて仮想的なテーブルと�
 その代わり必要に応じて再導出（リフレッシュ）が必要
 
 回答2-1
+create view employees_view as select * from employees
+select * from employees_view
 
 回答2-2
+変わらない
