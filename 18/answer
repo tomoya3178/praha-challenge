@@ -6,8 +6,15 @@ slow_query_log_file=slow_query.log
 long_query_time=0.1
 
 回答1-3
+select * from departments
+select * from employees limit 1
+select * from dept_emp where emp_no=110022
+select dept_no, count(dept_no) from dept_emp group by dept_no
 
 回答1-4
+select * from dept_emp
+select * from dept_emp order by dept_no
+select * from dept_emp join departments on dept_emp.dept_no = departments.dept_no
 
 回答2-1
 -s c
@@ -30,4 +37,4 @@ where句とorder by句の対象が異なる場合に
 そもそも結合しないか結合した上で抽出しないかの違い
 
 回答5
-log-queries-not-using-indexes
+log-queries-not-using-indexesというオプションについて説明してください
