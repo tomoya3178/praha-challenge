@@ -2,6 +2,10 @@
 複数のトランザクションがそれぞれ他方の所有するロックが解除されるのを待機して処理が進まなくなる状態
 
 回答1-2
+https://www.itmedia.co.jp/news/articles/0803/11/news077.html
+https://www.itmedia.co.jp/enterprise/articles/0803/11/news078.html
+同一銘柄の注文が短時間に集中したことが原因
+リトライ上限を緩和することで解決
 
 回答1-3
 READ UNCOMMITTED
