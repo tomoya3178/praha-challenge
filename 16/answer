@@ -30,5 +30,6 @@ create index birth_date_index on employees(birth_date)
 インデックスの更新が必要になる分遅くなる
 
 回答4
-最若手の男性社員
-最も多い入社年度の男性社員
+最も若い男性社員
+最も多い入社年度の社員数
+給料が高い社員上位10名
