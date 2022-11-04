@@ -7,6 +7,10 @@ HAVING COUNT(CustomerID) >= 3
 ORDER BY COUNT(CustomerID) DESC
 
 回答1-1-2
+SELECT CustomerID, COUNT(CustomerID)
+FROM Orders
+GROUP BY CustomerID
+ORDER BY COUNT(CustomerID) DESC
 
 回答1-2
 SELECT OrderID, MAX(OrderDetailCount) 
