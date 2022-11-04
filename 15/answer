@@ -17,14 +17,13 @@ FROM (
 )
 
 回答1-3
-SELECT Shippers.ShipperID, COUNT(Orders.OrderID) AS ShippingCount
-FROM Shippers
-LEFT JOIN Orders ON Shippers.ShipperID=Orders.ShipperID
-GROUP BY Orders.ShipperID
+SELECT ShipperID, COUNT(ShipperID) AS ShippingCount
+FROM Orders
+GROUP BY ShipperID
 ORDER BY ShippingCount DESC
 
 回答1-4
-SELECT SUM(Products.Price * OrderDetails.Quantity) AS Sales, Country
+SELECT ROUND(SUM(Products.Price * OrderDetails.Quantity)) AS Sales, Country
 FROM Customers
 LEFT JOIN Orders ON Customers.CustomerID=Orders.CustomerID
 LEFT JOIN OrderDetails ON Orders.OrderID=OrderDetails.OrderID
@@ -42,7 +41,7 @@ GROUP BY Country, OrderYear
 
 回答1-6-1
 ALTER TABLE Employees
-ADD Junior boolean
+ADD Junior boolean NOT NULL
 DEFAULT false
 
 回答1-6-2
