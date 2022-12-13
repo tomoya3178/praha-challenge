@@ -1,0 +1,26 @@
+回答1-1
+複数のカラムから成るインデックスのこと
+主カラムが同じで従カラムが異なるデータのテーブルスキャンが不要になる
+従カラムのみを含む読み込みの場合には参照されない
+
+回答1-2
+姓を主カラムとして複合インデックスを作成する
+CREATE INDEX employees_name ON employees (last_name, first_name)
+
+回答2-1
+select * from employees where YEAR(birth_date)=1953 AND YEAR(hire_date)=1986
+CREATE INDEX birth_date_hire_date_index ON dept_emp (birth_date, hire_date)
+
+回答2-2
+select * from dept_emp where YEAR(from_date)=1986 AND YEAR(to_date)=9999
+CREATE INDEX from_date_to_date_index ON dept_emp (from_date, to_date)
+
+回答2-3
+select * from dept_manager where YEAR(from_date)=1985 AND YEAR(to_date)=9999
+CREATE INDEX from_date_to_date_index ON dept_manager (from_date, to_date)
+
+回答3-1
+
+回答3-2
+
+回答3-3
