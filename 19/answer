@@ -20,7 +20,7 @@
 全行取得される
 
 回答2
-assigned-issueテーブルを作成する
+AssigneeのidとIssueのidを複合プライマリキーとする中間テーブルを作成する
 
 回答3
 order by句においてnullはどのように扱われるでしょうか
