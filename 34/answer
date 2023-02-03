@@ -1,0 +1,84 @@
+回答1-1
+値が同じであっても区別されるIDが必要なオブジェクト
+
+回答1-2
+値が同じであれば区別されないIDが必要ないオブジェクト
+
+回答1-3
+同一のトランザクションに含めたいエンティティや値オブジェクトからなるエンティティ
+
+回答1-4
+関係者に共有される名前
+
+回答1-5
+同じエンティティを共有する単位
+
+回答1-6
+システムが対象とする営み
+
+回答1-7
+複数のエンティティに跨るなどエンティティのインスタンスメソッドとして不適切なビジネスロジックを書く
+
+回答1-8
+集約単位でDBへの格納と復元を行うオブジェクト
+
+回答1-9
+他オブジェクトを操作するオブジェクト
+
+回答1-10
+読み込み時に集約とは別の用途に応じた単位を用いること
+
+回答1-11
+Data Transfer Objectの略で値の受け渡しのためのオブジェクトのこと
+
+回答2-1
+販売時には商品の価格が問題になるが配送時には問題にならない
+
+回答2-2
+class Human {
+  readonly id: string
+  readonly bloodType: 'a' | 'b' | 'o' | 'ab'
+  readonly birthday: Date
+  readonly name: string
+}
+
+回答2-3
+class Human {
+  readonly id: Id
+  readonly bloodType: BloodType
+  readonly birthday: Birthday
+  readonly name: Name
+}
+
+class BloodType {
+  private readonly value:  'a' | 'b' | 'o' | 'ab'
+  constructor (input: this['value']) {
+    this.value = input
+  }
+}
+
+class Birthday {
+  private readonly value: Date
+  constructor (input: this['value']) {
+    const today = new Date()
+    const thisBirthday = new Date(today.getFullYear(), input.month - 1, input.date)
+    const diffYears = today.getFullYear() - input.getFullYear()
+    const age = today < thisBirthday ? diffYears - 1 : diffYears
+    if (age < 20) {
+      throw new Error()
+    }
+    this.value = input
+  }
+}
+
+class Name {
+  private readonly value: string
+  constructor (input: string) {
+    if (input.length >= 20) {
+      throw new Error()
+    }
+    this.value = input
+  }
+}
+
+回答3
