@@ -1,0 +1,21 @@
+課題
+https://airtable.com/appj4zNpELn8w279r/tblg8ePOEQRDtIGiY/viwV3pAlEvPOOgmHF/recXR4J8BkMrDeSHF?blocks=hide
+
+回答1-1
+select文にビュー名として名前を付けて仮想的なテーブルとして扱う
+
+回答1-2
+参照しやすくなる
+マスクできる
+
+回答1-3
+導出したデータを実際のテーブルとして保持する
+ビューと違って読み込みの都度導出を必要としないので高速
+その代わり必要に応じて再導出（リフレッシュ）が必要
+
+回答2-1
+create view employees_view as select * from employees
+select * from employees_view
+
+回答2-2
+変わらない
