@@ -35,7 +35,7 @@ https://airtable.com/appj4zNpELn8w279r/tblg8ePOEQRDtIGiY/viwV3pAlEvPOOgmHF/reckn
 Data Transfer Objectの略で値の受け渡しのためのオブジェクトのこと
 
 回答2-1
-販売時には商品の価格が問題になるが配送時には問題にならない
+「商品」という概念を販売部門と配送部門で扱う際に販売部門では価格が問題になるが配送部門においては問題にならない
 
 回答2-2
 class Human {
