@@ -2,10 +2,10 @@
 https://airtable.com/appj4zNpELn8w279r/tblg8ePOEQRDtIGiY/viwV3pAlEvPOOgmHF/recknEJ5i60SURASL?blocks=hide
 
 回答1-1
-値が同じであっても区別されるIDが必要なオブジェクト
+値が同じであっても区別される、IDが必要なオブジェクト
 
 回答1-2
-値が同じであれば区別されないIDが必要ないオブジェクト
+値が同じであれば区別されない、IDが必要ないオブジェクト
 
 回答1-3
 同一のトランザクションに含めたいエンティティや値オブジェクトからなるエンティティ
