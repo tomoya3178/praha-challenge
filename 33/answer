@@ -22,7 +22,7 @@ https://airtable.com/appj4zNpELn8w279r/tblg8ePOEQRDtIGiY/viwV3pAlEvPOOgmHF/recl9
 テスト時にモックに差し替えることで容易になる
 
 回答1-4
-インフラ層の実装ではなくインターフェイスに依存する
+インフラ層の実装ではなくドメイン層のインターフェイスに依存する
 
 回答1-5
 ロウレベルセキュリティとユースケース層の記述の併用
