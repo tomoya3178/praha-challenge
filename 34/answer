@@ -62,7 +62,7 @@ class Birthday {
   private readonly value: Date
   constructor (input: this['value']) {
     const today = new Date()
-    const thisBirthday = new Date(today.getFullYear(), input.month - 1, input.date)
+    const thisBirthday = new Date(today.getFullYear(), input.getMonth(), input.getDate())
     const diffYears = today.getFullYear() - input.getFullYear()
     const age = today < thisBirthday ? diffYears - 1 : diffYears
     if (age < 20) {
