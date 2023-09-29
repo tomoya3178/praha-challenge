@@ -1,5 +1,5 @@
-import { Task } from "./task";
+import { Task } from './task';
 
 export interface TaskRepositoryInterface {
-  add(task: Task): Promise<void>
+  add(task: Task): Promise<void>;
 }
