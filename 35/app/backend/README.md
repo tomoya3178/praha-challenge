@@ -1,38 +1,5 @@
-## アーキテクチャ
-### 各層の役割
-| 層の名前 | 層の役割 | 依存しても良い層 | 依存してはいけない層 |
-| - | - | - | - |
-| controller | ユースケースの初期化と呼び出し<br><br>リクエストのバリデーション（型の違いや必須項目の不足など、ドメインロジックに影響されない内容のみ） | app<br><br>usecase初期化のために他の層（例えばprismaとかinfra/repositoryとか）にconrollerが依存すること（DIコンテナとしての役割）を例外的に許容する | - |
-| infra/db | DBと接続してデータを永続化したり、取り出すこと | app(DTOのみ), domain(entityのみ) | controller |
-| app | レポジトリあるいはQS（クエリサービス）の呼び出し | domain | infraには依存してはいけない |
-| domain | ドメインロジックを表現すること | なし | domain以外の、どの層にも依存してはいけない |
-
-### QueryServiceとRepositoryについて
-| 名前         | 役割               | 戻り値                         | 
-| ------------ | ------------------ | ------------------------------ | 
-| QueryService | データの取得       | DTO（app層で定義）             | 
-| Repository   | データの保存、更新 | エンティティ（domain層で定義） | 
-
-
-## マイグレーション
-#### 実施手順
-1. `schema.prisma`にmodel追加
-2. `yarn migrate:dev`（本番環境の場合は`yarn migrate:prd`）
-3. これでmigrations配下に各マイグレーションの履歴が生成される
-
-#### ロールバックについて
-現時点のprismaにはマイグレーションのロールバック機能が存在しない。
-そのため、`schema.prisma`を編集して、再度マイグレーションを実施する必要がある
-
-## テスト
-#### 単体テスト
-1. `yarn test`
-
-#### 統合テスト(DBに対するCRUDを含む)
-1. `yarn test:integration`
-
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
 
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
@@ -62,30 +29,33 @@
 ## Installation
 
 ```bash
-$ npm install
+$ yarn install
 ```
 
 ## Running the app
 
 ```bash
 # development
-$ npm run start
+$ yarn run start
 
 # watch mode
-$ npm run start:dev
+$ yarn run start:dev
 
 # production mode
-$ npm run start:prod
+$ yarn run start:prod
 ```
 
 ## Test
 
 ```bash
 # unit tests
-$ npm run test:unit
+$ yarn run test
 
-# test all
-$ npm run test
+# e2e tests
+$ yarn run test:e2e
+
+# test coverage
+$ yarn run test:cov
 ```
 
 ## Support
