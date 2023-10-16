@@ -8,11 +8,14 @@ export class AddMemberUseCase {
     private readonly service: MemberService,
     private readonly repository: MemberRepositoryInterface,
   ) {}
-  async execute(input: Member['value']) {
+  async execute(input: Omit<Member['value'], 'status'>) {
     if (await this.service.emailExists(input.email)) {
       throw new BadRequestException();
     }
-    const member = new Member(input);
+    const member = new Member({
+      ...input,
+      status: 'ACTIVE',
+    });
     await this.repository.add(member);
   }
 }
