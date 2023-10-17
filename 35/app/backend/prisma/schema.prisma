@@ -36,17 +36,21 @@ enum MemberStatus {
   INACTIVE
 }
 
-model Members {
-  id String @id
-  name String
-  email String @unique
-  status Status
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+model AssignedTask {
+  id        String             @id
+  taskId    String
+  memberId  String
+  status    AssignedTaskStatus
+  createdAt DateTime           @default(now()) @map("created_at")
+  updatedAt DateTime           @updatedAt @map("updated_at")
+  task      Task               @relation(fields: [taskId], references: [id])
+  member    Member             @relation(fields: [memberId], references: [id])
+
+  @@unique([taskId, memberId])
 }
 
-enum Status {
-  ACTIVE
-  PAUSING
-  INACTIVE
+enum AssignedTaskStatus {
+  UNDONE
+  REVIEWING
+  DONE
 }
