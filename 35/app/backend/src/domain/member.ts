@@ -5,19 +5,27 @@ export class AssignedTask {
   readonly value: {
     readonly id: Id;
     readonly taskId: Task['value']['id'];
-    readonly status: '未着手' | 'レビュー待ち' | '完了';
+    readonly status: 'UNDONE' | 'REVIEWING' | 'DONE';
   };
   constructor(input: AssignedTask['value']) {
     this.value = input;
   }
   changeStatus(status: AssignedTask['value']['status']) {
-    if (this.value.status === '完了') {
+    if (this.value.status === 'DONE') {
       throw new Error();
     }
     return new AssignedTask({
       ...this.value,
       status,
     });
+  }
+  toObject() {
+    const { id, taskId, ...rest } = this.value;
+    return {
+      ...rest,
+      id: id.toString(),
+      taskId: taskId.toString(),
+    };
   }
 }
 
@@ -49,7 +57,7 @@ export class Member {
             new AssignedTask({
               id: Id.init(),
               taskId: task.value.id,
-              status: '未着手',
+              status: 'UNDONE',
             }),
         ),
       ],

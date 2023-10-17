@@ -10,24 +10,45 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Tasks {
-  id String @id
-  name String
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+model Task {
+  id            String         @id
+  name          String
+  assignedTasks AssignedTask[]
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt @map("updated_at")
 }
 
-model Members {
-  id String @id
-  name String
-  email String @unique
-  status Status
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+model Member {
+  id            String         @id
+  name          String
+  email         String         @unique
+  status        MemberStatus
+  assignedTasks AssignedTask[]
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt @map("updated_at")
 }
 
-enum Status {
+enum MemberStatus {
   ACTIVE
   PAUSING
   INACTIVE
+}
+
+model AssignedTask {
+  id        String             @id
+  taskId    String
+  memberId  String
+  status    AssignedTaskStatus
+  createdAt DateTime           @default(now()) @map("created_at")
+  updatedAt DateTime           @updatedAt @map("updated_at")
+  task      Task               @relation(fields: [taskId], references: [id])
+  member    Member             @relation(fields: [memberId], references: [id])
+
+  @@unique([taskId, memberId])
+}
+
+enum AssignedTaskStatus {
+  UNDONE
+  REVIEWING
+  DONE
 }
