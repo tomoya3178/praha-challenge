@@ -31,14 +31,16 @@ export class MemberRepository implements MemberRepositoryInterface {
   }
   async add(member: Member) {
     const { assignedTasks, ...rest } = member.toObject();
-    await this.prisma.member.create({
-      data: rest,
-    });
-    await this.prisma.assignedTask.createMany({
-      data: assignedTasks.map((assignedTask) => ({
-        ...assignedTask,
-        memberId: rest.id,
-      })),
+    await this.prisma.$transaction(async (prisma) => {
+      await prisma.member.create({
+        data: rest,
+      });
+      await prisma.assignedTask.createMany({
+        data: assignedTasks.map((assignedTask) => ({
+          ...assignedTask,
+          memberId: rest.id,
+        })),
+      });
     });
   }
   async findById(id: Member['value']['id']) {
@@ -53,18 +55,24 @@ export class MemberRepository implements MemberRepositoryInterface {
   }
   async update(member: Member) {
     const { assignedTasks, ...rest } = member.toObject();
-    await this.prisma.member.update({
-      where: { id: member.value.id.toString() },
-      data: rest,
-    });
-    await this.prisma.assignedTask.deleteMany({
-      where: { memberId: member.value.id.toString() },
-    });
-    await this.prisma.assignedTask.createMany({
-      data: assignedTasks.map((assignedTask) => ({
-        ...assignedTask,
-        memberId: member.value.id.toString(),
-      })),
+    await this.prisma.$transaction(async (prisma) => {
+      await Promise.all([
+        prisma.member.update({
+          where: { id: member.value.id.toString() },
+          data: rest,
+        }),
+        (async () => {
+          await prisma.assignedTask.deleteMany({
+            where: { memberId: member.value.id.toString() },
+          });
+          await prisma.assignedTask.createMany({
+            data: assignedTasks.map((assignedTask) => ({
+              ...assignedTask,
+              memberId: member.value.id.toString(),
+            })),
+          });
+        })(),
+      ]);
     });
   }
 }
