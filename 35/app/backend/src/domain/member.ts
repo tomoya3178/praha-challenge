@@ -64,10 +64,13 @@ export class Member {
     });
   }
   toObject() {
-    const { id, ...rest } = this.value;
+    const { id, assignedTasks, ...rest } = this.value;
     return {
       ...rest,
       id: id.toString(),
+      assignedTasks: assignedTasks.map((assignedTask) =>
+        assignedTask.toObject(),
+      ),
     };
   }
 }

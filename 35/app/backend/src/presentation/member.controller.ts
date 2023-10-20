@@ -1,11 +1,16 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { AddMemberUseCase } from 'src/application/add-member.use-case';
+import { AssignTasksUseCase } from 'src/application/assign-tasks.use-case';
 import { Id } from 'src/domain/id';
 import { AssignedTask, Member } from 'src/domain/member';
+import { Task } from 'src/domain/task';
 
 @Controller('members')
 export class MemberController {
-  constructor(private readonly addMemberUseCase: AddMemberUseCase) {}
+  constructor(
+    private readonly addMemberUseCase: AddMemberUseCase,
+    private readonly assignTasksUseCase: AssignTasksUseCase,
+  ) {}
   @Post()
   async add(
     @Body()
@@ -31,6 +36,19 @@ export class MemberController {
             taskId: new Id(assignedTask.taskId),
           }),
       ),
+    });
+  }
+  @Post('assign')
+  async assignTasks(
+    @Body()
+    request: {
+      memberId: Member['value']['id']['value'];
+      taskIds: Task['value']['id']['value'][];
+    },
+  ) {
+    return await this.assignTasksUseCase.execute({
+      memberId: new Id(request.memberId),
+      taskIds: request.taskIds.map((taskId) => new Id(taskId)),
     });
   }
 }
