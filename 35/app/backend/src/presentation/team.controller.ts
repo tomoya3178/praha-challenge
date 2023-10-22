@@ -12,7 +12,7 @@ export class TeamController {
     private readonly addMemberUseCase: AddMemberUseCase,
     private readonly assignTasksUseCase: AssignTasksUseCase,
   ) {}
-  @Post()
+  @Post(':id/members')
   async add(
     @Param() id: Team['value']['id'],
     @Body()
