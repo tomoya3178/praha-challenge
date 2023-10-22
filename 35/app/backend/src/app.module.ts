@@ -4,7 +4,7 @@ import { TaskController } from './presentation/task.controller';
 import { AddTaskUseCase } from './application/add-task.use-case';
 import { TASK_REPOSITORY_TOKEN } from './domain/task.repository.interface';
 import { TaskRepository } from './infrastructure/task.repository';
-import { MemberController } from './presentation/member.controller';
+import { TeamController } from './presentation/member.controller';
 import { AddMemberUseCase } from './application/add-member.use-case';
 import { MEMBER_REPOSITORY_TOKEN } from './domain/member.repository.interface';
 import { MemberRepository } from './infrastructure/member.repository';
@@ -12,7 +12,7 @@ import { AssignTasksUseCase } from './application/assign-tasks.use-case';
 
 @Module({
   imports: [],
-  controllers: [TaskController, MemberController],
+  controllers: [TaskController, TeamController],
   providers: [
     PrismaService,
     AddTaskUseCase,
