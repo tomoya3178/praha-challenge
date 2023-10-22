@@ -30,15 +30,13 @@ export class Pair {
       members: [...this.value.members, member],
     });
   }
-  removeMember(member: Member) {
+  removeMember(memberId: Member['value']['id']) {
     if (this.value.members.length <= 2) {
       throw new InternalServerErrorException();
     }
     return new Pair({
       ...this.value,
-      members: this.value.members.filter(
-        (x) => !x.value.id.equals(member.value.id),
-      ),
+      members: this.value.members.filter((x) => !x.value.id.equals(memberId)),
     });
   }
 }
