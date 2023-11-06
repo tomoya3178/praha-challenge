@@ -17,7 +17,7 @@ export class Team {
   readonly value: {
     readonly id: Id;
     readonly name: Name;
-    readonly pairs: Pair[];
+    readonly pairs: ReadonlyArray<Pair>;
   };
   constructor(input: Team['value']) {
     this.value = input;

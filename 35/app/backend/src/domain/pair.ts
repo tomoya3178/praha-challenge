@@ -16,7 +16,7 @@ export class Pair {
   readonly value: {
     readonly id: Id;
     readonly name: Name;
-    readonly members: Member[];
+    readonly members: ReadonlyArray<Member>;
   };
   constructor(input: Pair['value']) {
     this.value = input;
