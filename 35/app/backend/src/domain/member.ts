@@ -1,3 +1,4 @@
+import { InternalServerErrorException } from '@nestjs/common';
 import { Id } from './id';
 import { Task } from './task';
 
@@ -35,10 +36,19 @@ export class Member {
     readonly status: 'ACTIVE' | 'PAUSING' | 'INACTIVE';
     readonly name: string;
     readonly email: string;
-    readonly assignedTasks: AssignedTask[];
+    readonly assignedTasks: ReadonlyArray<AssignedTask>;
   };
   constructor(input: Member['value']) {
     this.value = input;
+  }
+  changeStatus(status: Member['value']['status']) {
+    if (this.value.status === status) {
+      throw new InternalServerErrorException();
+    }
+    return new Member({
+      ...this.value,
+      status,
+    });
   }
   assignTasks(tasks: Task[]) {
     if (

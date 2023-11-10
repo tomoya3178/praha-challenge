@@ -22,16 +22,16 @@ export class Team {
   constructor(input: Team['value']) {
     this.value = input;
   }
-  addMember(member: Member) {
+  addMember(memberId: Member['value']['id']) {
     const smallestPair = this.value.pairs.reduce((smallest, current) => {
-      if (smallest.value.members.length <= current.value.members.length) {
+      if (smallest.value.memberIds.length <= current.value.memberIds.length) {
         return smallest;
       }
       return current;
     });
-    if (smallestPair.value.members.length === 3) {
-      const movingMember = smallestPair.value.members.at(-1);
-      if (!movingMember) {
+    if (smallestPair.value.memberIds.length === 3) {
+      const movingMemberId = smallestPair.value.memberIds.at(-1);
+      if (!movingMemberId) {
         throw new InternalServerErrorException();
       }
       return new Team({
@@ -39,14 +39,14 @@ export class Team {
         pairs: [
           ...this.value.pairs.map((x) => {
             if (x.value.id.equals(smallestPair.value.id)) {
-              return x.removeMember(movingMember.value.id);
+              return x.removeMember(movingMemberId);
             }
             return x;
           }),
           new Pair({
             id: Id.init(),
             name: new PairName('z'),
-            members: [movingMember, member],
+            memberIds: [movingMemberId, memberId],
           }),
         ],
       });
@@ -55,7 +55,7 @@ export class Team {
       ...this.value,
       pairs: this.value.pairs.map((x) => {
         if (x.value.id.equals(smallestPair.value.id)) {
-          return x.addMember(member);
+          return x.addMember(memberId);
         }
         return x;
       }),
@@ -63,16 +63,16 @@ export class Team {
   }
   removeMember(memberId: Member['value']['id']) {
     const pair = this.value.pairs.find((pair) =>
-      pair.value.members.some((x) => x.value.id.equals(memberId)),
+      pair.value.memberIds.some((x) => x.equals(memberId)),
     );
     if (!pair) {
       throw new InternalServerErrorException();
     }
-    if (pair.value.members.length === 2) {
-      const restMember = pair.value.members.find(
-        (x) => !x.value.id.equals(memberId),
+    if (pair.value.memberIds.length === 2) {
+      const restMemberId = pair.value.memberIds.find(
+        (x) => !x.equals(memberId),
       );
-      if (!restMember) {
+      if (!restMemberId) {
         throw new InternalServerErrorException();
       }
       return new Team({
@@ -80,7 +80,7 @@ export class Team {
         pairs: this.value.pairs.filter(
           (x) => !x.value.id.equals(pair.value.id),
         ),
-      }).addMember(restMember);
+      }).addMember(restMemberId);
     }
     return new Team({
       ...this.value,
