@@ -16,27 +16,27 @@ export class Pair {
   readonly value: {
     readonly id: Id;
     readonly name: Name;
-    readonly members: ReadonlyArray<Member>;
+    readonly memberIds: ReadonlyArray<Member['value']['id']>;
   };
   constructor(input: Pair['value']) {
     this.value = input;
   }
-  addMember(member: Member) {
-    if (this.value.members.length >= 3) {
+  addMember(memberId: Member['value']['id']) {
+    if (this.value.memberIds.length >= 3) {
       throw new InternalServerErrorException();
     }
     return new Pair({
       ...this.value,
-      members: [...this.value.members, member],
+      memberIds: [...this.value.memberIds, memberId],
     });
   }
   removeMember(memberId: Member['value']['id']) {
-    if (this.value.members.length <= 2) {
+    if (this.value.memberIds.length <= 2) {
       throw new InternalServerErrorException();
     }
     return new Pair({
       ...this.value,
-      members: this.value.members.filter((x) => !x.value.id.equals(memberId)),
+      memberIds: this.value.memberIds.filter((x) => !x.equals(memberId)),
     });
   }
 }
