@@ -8,9 +8,15 @@ import {
   TEAM_REPOSITORY_TOKEN,
   TeamRepositoryInterface,
 } from 'src/domain/team.repository.interface';
+import {
+  TRANSACTION_MANAGER_TOKEN,
+  TransactionManagerInterface,
+} from 'src/domain/transaction-manager.interface';
 
 export class ActivateMemberUseCase {
   constructor(
+    @Inject(TRANSACTION_MANAGER_TOKEN)
+    private readonly transactionManager: TransactionManagerInterface,
     @Inject(MEMBER_REPOSITORY_TOKEN)
     private readonly repository: MemberRepositoryInterface,
     @Inject(TEAM_REPOSITORY_TOKEN)
@@ -22,7 +28,6 @@ export class ActivateMemberUseCase {
       throw new InternalServerErrorException();
     }
     const updatedMember = member.changeStatus('ACTIVE');
-    await this.repository.update(updatedMember);
     const teams = await this.teamRepository.getAll();
     const team = teams
       .reduce((a, b) => {
@@ -37,6 +42,9 @@ export class ActivateMemberUseCase {
         return a;
       })
       .addMember(updatedMember.value.id);
-    await this.teamRepository.update(team);
+    await this.transactionManager.execute(async () => {
+      await this.repository.update(updatedMember);
+      await this.teamRepository.update(team);
+    });
   }
 }
