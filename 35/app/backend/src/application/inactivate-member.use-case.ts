@@ -13,7 +13,7 @@ import {
   TransactionManagerInterface,
 } from 'src/domain/transaction-manager.interface';
 
-export class ActivateMemberUseCase {
+export class InactivateMemberUseCase {
   constructor(
     @Inject(TRANSACTION_MANAGER_TOKEN)
     private readonly transactionManager: TransactionManagerInterface,
