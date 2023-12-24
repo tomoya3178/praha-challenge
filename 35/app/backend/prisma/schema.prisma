@@ -24,6 +24,7 @@ model Member {
   email         String         @unique
   status        MemberStatus
   assignedTasks AssignedTask[]
+  pairMember    PairMember?
   createdAt     DateTime       @default(now()) @map("created_at")
   updatedAt     DateTime       @updatedAt @map("updated_at")
 }
@@ -39,10 +40,10 @@ model AssignedTask {
   taskId    String
   memberId  String
   status    AssignedTaskStatus
-  createdAt DateTime           @default(now()) @map("created_at")
-  updatedAt DateTime           @updatedAt @map("updated_at")
   task      Task               @relation(fields: [taskId], references: [id])
   member    Member             @relation(fields: [memberId], references: [id])
+  createdAt DateTime           @default(now()) @map("created_at")
+  updatedAt DateTime           @updatedAt @map("updated_at")
 
   @@unique([taskId, memberId])
 }
@@ -51,4 +52,33 @@ enum AssignedTaskStatus {
   UNDONE
   REVIEWING
   DONE
+}
+
+model Team {
+  id        String   @id
+  name      Int
+  pairs     Pair[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+}
+
+model Pair {
+  id          String       @id
+  teamId      String
+  name        String
+  team        Team         @relation(fields: [teamId], references: [id])
+  pairMembers PairMember[]
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
+}
+
+model PairMember {
+  pairId    String
+  memberId  String
+  pair      Pair     @relation(fields: [pairId], references: [id])
+  member    Member   @relation(fields: [memberId], references: [id])
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([memberId])
 }
