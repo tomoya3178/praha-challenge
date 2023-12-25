@@ -63,6 +63,20 @@ export class Member {
       ],
     });
   }
+  changeAssignedTaskStatus(
+    taskId: AssignedTask['value']['id'],
+    input: AssignedTask['value']['status'],
+  ) {
+    return new Member({
+      ...this.value,
+      assignedTasks: this.value.assignedTasks.map((assignedTask) => {
+        if (taskId.equals(assignedTask.value.id)) {
+          return assignedTask.changeStatus(input);
+        }
+        return assignedTask;
+      }),
+    });
+  }
   toObject() {
     const { id, assignedTasks, ...rest } = this.value;
     return {
