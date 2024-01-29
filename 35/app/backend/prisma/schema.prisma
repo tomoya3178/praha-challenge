@@ -10,6 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+<<<<<<< HEAD
 model Task {
   id            String         @id
   name          String
@@ -26,6 +27,26 @@ model Member {
   assignedTasks AssignedTask[]
   createdAt     DateTime       @default(now()) @map("created_at")
   updatedAt     DateTime       @updatedAt @map("updated_at")
+=======
+model Tasks {
+  id        String   @id
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("tasks")
+}
+
+model Members {
+  id        String       @id
+  name      String
+  email     String       @unique
+  status    MemberStatus
+  createdAt DateTime     @default(now()) @map("created_at")
+  updatedAt DateTime     @updatedAt @map("updated_at")
+
+  @@map("members")
+>>>>>>> 35_2
 }
 
 enum MemberStatus {

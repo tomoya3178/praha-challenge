@@ -1,0 +1,44 @@
+{
+  "rules": {
+    "field-name-mapping-snake-case": [
+      "error",
+      {
+        "compoundWords": []
+      }
+    ],
+    "model-name-mapping-snake-case": [
+      "error",
+      {
+        "compoundWords": []
+      }
+    ],
+    "model-name-grammatical-number": [
+      "error",
+      {
+        "style": "plural"
+      }
+    ],
+    "field-order": [
+      "error",
+      {
+        "order": ["id", "...", "createdAt", "updatedAt"]
+      }
+    ],
+    "require-field-type": [
+      "error",
+      {
+        "require": [
+          { "ifName": "createdAt", "type": "DateTime" },
+          { "ifName": "updatedAt", "type": "DateTime" }
+        ]
+      }
+    ],
+    "require-field-index": [
+      "error",
+      {
+        "forAllRelations": true,
+        "forNames": []
+      }
+    ]
+  }
+}
