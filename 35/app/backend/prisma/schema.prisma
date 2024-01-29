@@ -11,8 +11,10 @@ datasource db {
 }
 
 model Tasks {
-  id String @id
-  name String
+  id        String   @id
+  name      String
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("tasks")
 }
