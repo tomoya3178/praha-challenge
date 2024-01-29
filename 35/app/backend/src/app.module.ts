@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+<<<<<<< HEAD
 import { PrismaService } from './infrastructure/prisma.service';
 import { TaskController } from './presentation/task.controller';
 import { AddTaskUseCase } from './application/add-task.use-case';
@@ -13,5 +14,12 @@ import { TaskRepository } from './infrastructure/task.repository';
     AddTaskUseCase,
     { provide: TASK_REPOSITORY_TOKEN, useClass: TaskRepository },
   ],
+=======
+
+@Module({
+  imports: [],
+  controllers: [],
+  providers: [],
+>>>>>>> main
 })
 export class AppModule {}
