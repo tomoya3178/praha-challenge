@@ -8,6 +8,7 @@ import { MemberController } from './presentation/member.controller';
 import { AddMemberUseCase } from './application/add-member.use-case';
 import { MEMBER_REPOSITORY_TOKEN } from './domain/member.repository.interface';
 import { MemberRepository } from './infrastructure/member.repository';
+import { AssignTasksUseCase } from './application/assign-tasks.use-case';
 
 @Module({
   imports: [],
@@ -16,6 +17,7 @@ import { MemberRepository } from './infrastructure/member.repository';
     PrismaService,
     AddTaskUseCase,
     AddMemberUseCase,
+    AssignTasksUseCase,
     { provide: TASK_REPOSITORY_TOKEN, useClass: TaskRepository },
     { provide: MEMBER_REPOSITORY_TOKEN, useClass: MemberRepository },
   ],
