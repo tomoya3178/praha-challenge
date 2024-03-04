@@ -10,43 +10,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-<<<<<<< HEAD
-model Task {
-  id            String         @id
-  name          String
-  assignedTasks AssignedTask[]
-  createdAt     DateTime       @default(now()) @map("created_at")
-  updatedAt     DateTime       @updatedAt @map("updated_at")
-}
-
-model Member {
-  id            String         @id
-  name          String
-  email         String         @unique
-  status        MemberStatus
-  assignedTasks AssignedTask[]
-  createdAt     DateTime       @default(now()) @map("created_at")
-  updatedAt     DateTime       @updatedAt @map("updated_at")
-=======
 model Tasks {
-  id        String   @id
-  name      String
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id           String          @id
+  name         String
+  AssignedTask AssignedTasks[]
+  createdAt    DateTime        @default(now()) @map("created_at")
+  updatedAt    DateTime        @updatedAt @map("updated_at")
 
   @@map("tasks")
 }
 
 model Members {
-  id        String       @id
-  name      String
-  email     String       @unique
-  status    MemberStatus
-  createdAt DateTime     @default(now()) @map("created_at")
-  updatedAt DateTime     @updatedAt @map("updated_at")
+  id           String          @id
+  name         String
+  email        String          @unique
+  status       MemberStatus
+  AssignedTask AssignedTasks[]
+  createdAt    DateTime        @default(now()) @map("created_at")
+  updatedAt    DateTime        @updatedAt @map("updated_at")
 
   @@map("members")
->>>>>>> 35_2
 }
 
 enum MemberStatus {
@@ -55,17 +38,18 @@ enum MemberStatus {
   INACTIVE
 }
 
-model AssignedTask {
+model AssignedTasks {
   id        String             @id
-  taskId    String
-  memberId  String
+  taskId    String             @map("task_id")
+  memberId  String             @map("member_id")
   status    AssignedTaskStatus
+  task      Tasks              @relation(fields: [taskId], references: [id])
+  member    Members            @relation(fields: [memberId], references: [id])
   createdAt DateTime           @default(now()) @map("created_at")
   updatedAt DateTime           @updatedAt @map("updated_at")
-  task      Task               @relation(fields: [taskId], references: [id])
-  member    Member             @relation(fields: [memberId], references: [id])
 
   @@unique([taskId, memberId])
+  @@map("assigned_tasks")
 }
 
 enum AssignedTaskStatus {
