@@ -26,6 +26,7 @@ model Members {
   email        String          @unique
   status       MemberStatus
   AssignedTask AssignedTasks[]
+  PairMember   PairMembers?
   createdAt    DateTime        @default(now()) @map("created_at")
   updatedAt    DateTime        @updatedAt @map("updated_at")
 
@@ -56,4 +57,38 @@ enum AssignedTaskStatus {
   UNDONE
   REVIEWING
   DONE
+}
+
+model Teams {
+  id        String   @id
+  name      Int
+  pairs     Pairs[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("teams")
+}
+
+model Pairs {
+  id          String        @id
+  teamId      String        @map("team_id")
+  name        String
+  team        Teams         @relation(fields: [teamId], references: [id])
+  pairMembers PairMembers[]
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  @@map("pairs")
+}
+
+model PairMembers {
+  pairId    String   @map("pair_id")
+  memberId  String   @map("member_id")
+  pair      Pairs    @relation(fields: [pairId], references: [id])
+  member    Members  @relation(fields: [memberId], references: [id])
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([memberId])
+  @@map("pair_members")
 }
