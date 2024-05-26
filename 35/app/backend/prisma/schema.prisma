@@ -11,21 +11,23 @@ datasource db {
 }
 
 model Tasks {
-  id        String   @id
-  name      String
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id           String          @id
+  name         String
+  AssignedTask AssignedTasks[]
+  createdAt    DateTime        @default(now()) @map("created_at")
+  updatedAt    DateTime        @updatedAt @map("updated_at")
 
   @@map("tasks")
 }
 
 model Members {
-  id        String       @id
-  name      String
-  email     String       @unique
-  status    MemberStatus
-  createdAt DateTime     @default(now()) @map("created_at")
-  updatedAt DateTime     @updatedAt @map("updated_at")
+  id           String          @id
+  name         String
+  email        String          @unique
+  status       MemberStatus
+  AssignedTask AssignedTasks[]
+  createdAt    DateTime        @default(now()) @map("created_at")
+  updatedAt    DateTime        @updatedAt @map("updated_at")
 
   @@map("members")
 }
@@ -34,4 +36,24 @@ enum MemberStatus {
   ACTIVE
   PAUSING
   INACTIVE
+}
+
+model AssignedTasks {
+  id        String             @id
+  taskId    String             @map("task_id")
+  memberId  String             @map("member_id")
+  status    AssignedTaskStatus
+  task      Tasks              @relation(fields: [taskId], references: [id])
+  member    Members            @relation(fields: [memberId], references: [id])
+  createdAt DateTime           @default(now()) @map("created_at")
+  updatedAt DateTime           @updatedAt @map("updated_at")
+
+  @@unique([taskId, memberId])
+  @@map("assigned_tasks")
+}
+
+enum AssignedTaskStatus {
+  UNDONE
+  REVIEWING
+  DONE
 }
