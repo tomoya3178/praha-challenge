@@ -18,3 +18,20 @@ model Tasks {
 
   @@map("tasks")
 }
+
+model Members {
+  id        String       @id
+  name      String
+  email     String       @unique
+  status    MemberStatus
+  createdAt DateTime     @default(now()) @map("created_at")
+  updatedAt DateTime     @updatedAt @map("updated_at")
+
+  @@map("members")
+}
+
+enum MemberStatus {
+  ACTIVE
+  PAUSING
+  INACTIVE
+}
