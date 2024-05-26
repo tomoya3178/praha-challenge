@@ -7,7 +7,7 @@ import { Pair, Name as PairName } from 'src/domain/pair';
 export class TeamRepository implements TeamRepositoryInterface {
   constructor(private readonly prisma: PrismaService) {}
   async findById(id: Id): Promise<Team | undefined> {
-    const row = await this.prisma.team.findUnique({
+    const row = await this.prisma.teams.findUnique({
       where: { id: id.toString() },
       include: {
         pairs: {
@@ -35,7 +35,7 @@ export class TeamRepository implements TeamRepositoryInterface {
     });
   }
   async findByMemberId(memberId: Id) {
-    const row = await this.prisma.team.findFirst({
+    const row = await this.prisma.teams.findFirst({
       where: {
         pairs: {
           some: {
@@ -71,7 +71,7 @@ export class TeamRepository implements TeamRepositoryInterface {
     });
   }
   async getAll() {
-    const rows = await this.prisma.team.findMany({
+    const rows = await this.prisma.teams.findMany({
       include: { pairs: { include: { pairMembers: true } } },
     });
     return rows.map(

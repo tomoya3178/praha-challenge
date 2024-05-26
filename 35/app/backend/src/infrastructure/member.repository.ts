@@ -14,9 +14,9 @@ export class MemberRepository implements MemberRepositoryInterface {
     private readonly cls: ClsService,
   ) {}
   async findByEmail(email: string): Promise<Member | undefined> {
-    const row = await this.prisma.member.findFirst({
+    const row = await this.prisma.members.findFirst({
       where: { email },
-      include: { assignedTasks: true },
+      include: { AssignedTask: true },
     });
     if (!row) {
       return undefined;
@@ -40,10 +40,10 @@ export class MemberRepository implements MemberRepositoryInterface {
   async add(member: Member) {
     const { assignedTasks, ...rest } = member.toObject();
     const process = async (transaction: PrismaTransactionType) => {
-      await transaction.member.create({
+      await transaction.members.create({
         data: rest,
       });
-      await transaction.assignedTask.createMany({
+      await transaction.assignedTasks.createMany({
         data: assignedTasks.map((assignedTask) => ({
           ...assignedTask,
           memberId: rest.id,
@@ -62,9 +62,9 @@ export class MemberRepository implements MemberRepositoryInterface {
     });
   }
   async findById(id: Member['value']['id']) {
-    const row = await this.prisma.member.findFirst({
+    const row = await this.prisma.members.findFirst({
       where: { id: id.toString() },
-      include: { assignedTasks: true },
+      include: { AssignedTask: true },
     });
     if (!row) {
       return undefined;
@@ -75,15 +75,15 @@ export class MemberRepository implements MemberRepositoryInterface {
     const { assignedTasks, ...rest } = member.toObject();
     const process = async (transaction: PrismaTransactionType) => {
       await Promise.all([
-        transaction.member.update({
+        transaction.members.update({
           where: { id: member.value.id.toString() },
           data: rest,
         }),
         (async () => {
-          await transaction.assignedTask.deleteMany({
+          await transaction.assignedTasks.deleteMany({
             where: { memberId: member.value.id.toString() },
           });
-          await transaction.assignedTask.createMany({
+          await transaction.assignedTasks.createMany({
             data: assignedTasks.map((assignedTask) => ({
               ...assignedTask,
               memberId: member.value.id.toString(),
