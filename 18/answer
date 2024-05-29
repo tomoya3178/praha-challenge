@@ -1,0 +1,43 @@
+課題
+https://airtable.com/appj4zNpELn8w279r/tblg8ePOEQRDtIGiY/viwV3pAlEvPOOgmHF/recc9mMGb9hgfctwt?blocks=hide
+
+回答1-1
+slow_query_log=ON
+slow_query_log_file=slow_query.log
+
+回答1-2
+long_query_time=0.1
+
+回答1-3
+select * from departments
+select * from employees limit 1
+select * from dept_emp where emp_no=110022
+select dept_no, count(dept_no) from dept_emp group by dept_no
+
+回答1-4
+select * from dept_emp
+select * from dept_emp order by dept_no
+select * from dept_emp join departments on dept_emp.dept_no = departments.dept_no
+
+回答2-1
+-s c
+
+回答2-2
+-s t
+
+回答2-3
+-s l
+
+回答3-1
+
+回答3-2
+
+回答4-1
+結合対象が多い可能性がある
+where句とorder by句の対象が異なる場合に
+
+回答4-2
+そもそも結合しないか結合した上で抽出しないかの違い
+
+回答5
+log-queries-not-using-indexesというオプションについて説明してください
