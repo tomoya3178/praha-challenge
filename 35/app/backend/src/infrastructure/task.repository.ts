@@ -6,12 +6,12 @@ import { Id } from 'src/domain/id';
 export class TaskRepository implements TaskRepositoryInterface {
   constructor(private readonly prisma: PrismaService) {}
   async add(task: Task) {
-    await this.prisma.task.create({
+    await this.prisma.tasks.create({
       data: task.toObject(),
     });
   }
   async findByIds(ids: Id[]): Promise<Task[]> {
-    const rows = await this.prisma.task.findMany({
+    const rows = await this.prisma.tasks.findMany({
       where: { id: { in: ids.map((id) => id.toString()) } },
     });
     return rows.map(
