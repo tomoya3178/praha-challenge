@@ -57,18 +57,3 @@ enum AssignedTaskStatus {
   REVIEWING
   DONE
 }
-
-model Members {
-  id String @id
-  name String
-  email String @unique
-  status Status
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-}
-
-enum Status {
-  ACTIVE
-  PAUSING
-  INACTIVE
-}
