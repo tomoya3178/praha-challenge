@@ -1,15 +1,9 @@
-import {
-  BadRequestException,
-  Inject,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { Inject, InternalServerErrorException } from '@nestjs/common';
 import { Member } from 'src/domain/member';
 import {
   MEMBER_REPOSITORY_TOKEN,
   MemberRepositoryInterface,
 } from 'src/domain/member.repository.interface';
-import { MemberService } from 'src/domain/member.service';
-import { Team } from 'src/domain/team';
 import {
   TEAM_REPOSITORY_TOKEN,
   TeamRepositoryInterface,
@@ -19,9 +13,8 @@ import {
   TransactionManagerInterface,
 } from 'src/domain/transaction-manager.interface';
 
-export class AddMemberUseCase {
+export class InactivateMemberUseCase {
   constructor(
-    private readonly service: MemberService,
     @Inject(TRANSACTION_MANAGER_TOKEN)
     private readonly transactionManager: TransactionManagerInterface,
     @Inject(MEMBER_REPOSITORY_TOKEN)
@@ -29,24 +22,18 @@ export class AddMemberUseCase {
     @Inject(TEAM_REPOSITORY_TOKEN)
     private readonly teamRepository: TeamRepositoryInterface,
   ) {}
-  async execute(
-    id: Team['value']['id'],
-    input: Omit<Member['value'], 'status'>,
-  ) {
-    if (await this.service.emailExists(input.email)) {
-      throw new BadRequestException();
+  async execute(id: Member['value']['id']) {
+    const member = await this.memberRepository.findById(id);
+    if (!member) {
+      throw new InternalServerErrorException();
     }
-    const member = new Member({
-      ...input,
-      status: 'ACTIVE',
-    });
-    const team = await this.teamRepository.findById(id);
+    const team = await this.teamRepository.findByMemberId(id);
     if (!team) {
       throw new InternalServerErrorException();
     }
     await this.transactionManager.execute(async () => {
-      await this.memberRepository.add(member);
-      await this.teamRepository.update(team.addMember(member.value.id));
+      await this.memberRepository.update(member.changeStatus('INACTIVE'));
+      await this.teamRepository.update(team.removeMember(id));
     });
   }
 }

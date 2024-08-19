@@ -2,13 +2,21 @@ import { PrismaService } from './prisma.service';
 import { MemberRepositoryInterface } from 'src/domain/member.repository.interface';
 import { AssignedTask, Member } from 'src/domain/member';
 import { Id } from 'src/domain/id';
+import {
+  PRISMA_TRANSACTION_TOKEN,
+  PrismaTransactionType,
+} from './prisma-transaction-manager';
+import { ClsService } from 'nestjs-cls';
 
 export class MemberRepository implements MemberRepositoryInterface {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly cls: ClsService,
+  ) {}
   async findByEmail(email: string): Promise<Member | undefined> {
-    const row = await this.prisma.member.findFirst({
+    const row = await this.prisma.members.findFirst({
       where: { email },
-      include: { assignedTasks: true },
+      include: { AssignedTask: true },
     });
     if (!row) {
       return undefined;
@@ -31,22 +39,32 @@ export class MemberRepository implements MemberRepositoryInterface {
   }
   async add(member: Member) {
     const { assignedTasks, ...rest } = member.toObject();
-    await this.prisma.$transaction(async (prisma) => {
-      await prisma.member.create({
+    const process = async (transaction: PrismaTransactionType) => {
+      await transaction.members.create({
         data: rest,
       });
-      await prisma.assignedTask.createMany({
+      await transaction.assignedTasks.createMany({
         data: assignedTasks.map((assignedTask) => ({
           ...assignedTask,
           memberId: rest.id,
         })),
       });
+    };
+    const transaction = this.cls.get<PrismaTransactionType>(
+      PRISMA_TRANSACTION_TOKEN,
+    );
+    if (transaction) {
+      await process(transaction);
+      return;
+    }
+    await this.prisma.$transaction(async (transaction) => {
+      await process(transaction);
     });
   }
   async findById(id: Member['value']['id']) {
-    const row = await this.prisma.member.findFirst({
+    const row = await this.prisma.members.findFirst({
       where: { id: id.toString() },
-      include: { assignedTasks: true },
+      include: { AssignedTask: true },
     });
     if (!row) {
       return undefined;
@@ -55,17 +73,17 @@ export class MemberRepository implements MemberRepositoryInterface {
   }
   async update(member: Member) {
     const { assignedTasks, ...rest } = member.toObject();
-    await this.prisma.$transaction(async (prisma) => {
+    const process = async (transaction: PrismaTransactionType) => {
       await Promise.all([
-        prisma.member.update({
+        transaction.members.update({
           where: { id: member.value.id.toString() },
           data: rest,
         }),
         (async () => {
-          await prisma.assignedTask.deleteMany({
+          await transaction.assignedTasks.deleteMany({
             where: { memberId: member.value.id.toString() },
           });
-          await prisma.assignedTask.createMany({
+          await transaction.assignedTasks.createMany({
             data: assignedTasks.map((assignedTask) => ({
               ...assignedTask,
               memberId: member.value.id.toString(),
@@ -73,6 +91,16 @@ export class MemberRepository implements MemberRepositoryInterface {
           });
         })(),
       ]);
+    };
+    const transaction = this.cls.get<PrismaTransactionType>(
+      PRISMA_TRANSACTION_TOKEN,
+    );
+    if (transaction) {
+      await process(transaction);
+      return;
+    }
+    await this.prisma.$transaction(async (transaction) => {
+      await process(transaction);
     });
   }
 }
