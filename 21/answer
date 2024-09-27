@@ -1,0 +1,92 @@
+課題
+https://airtable.com/appj4zNpELn8w279r/tblg8ePOEQRDtIGiY/viwV3pAlEvPOOgmHF/recpYbNKLXjONok0L?blocks=hide
+
+回答1-1
+複数のトランザクションがそれぞれ他方の所有するロックが解除されるのを待機して処理が進まなくなる状態
+
+回答1-2
+https://www.itmedia.co.jp/news/articles/0803/11/news077.html
+https://www.itmedia.co.jp/enterprise/articles/0803/11/news078.html
+同一銘柄の注文が短時間に集中したことが原因
+リトライ上限を緩和することで解決
+
+回答1-3
+READ UNCOMMITTED
+他のトランザクションで変更されたコミット前のデータを読み込んでしまうことがある
+ダーティリードが存在する
+
+READ COMMITTED
+コミットされたもののみ読み取る
+ダーティリードを防ぐことができる
+
+REPEATABLE READ
+ノンリピータブルリードを防ぐことができる
+
+SERIALIZABLE
+ファントムリードを防ぐことができる
+
+回答1-4
+処理の種類によってロックする対象がレコードかテーブルか
+
+回答1-5
+同時更新が稀であるという楽観に基づいたロックのこと
+データ取得時と同じ状態であることを確認してから更新することでデータの整合性を保証する方式
+同時更新が頻繁であるという悲観に基づいたロックのこと
+レコードを取得する際にロックをかけて他のトランザクションから更新されないようにすることでデータの整合性を保証する方式
+
+回答1-6
+どちらも書き込みは不可で読み込みが可能であるかの違い
+
+回答1-7
+ファジーリードは他で更新された値を読み込む
+ファントムリードは他で追加されたレコードを読み込む
+
+回答2-1-1
+T1
+SELECT Title FROM Articles WHERE Id = 1;
+↓
+T2
+UPDATE Articles SET Title = 'Changed' WHERE id = 1;
+↓
+T1
+SELECT Title FROM Articles WHERE Id = 1;
+Changedになっている
+↓
+T2
+ROLLBACK;
+
+回答2-1-2
+T1
+SELECT * FROM Articles;
+↓
+T2
+UPDATE Articles SET Title = 'Changed' WHERE id = 1;
+COMMIT;
+↓
+T1
+SELECT Title FROM Articles WHERE Id = 1;
+Changedになっている
+
+回答2-1-3
+T1
+SELECT Title FROM Articles;
+↓
+T2
+INSERT INTO Articles(Id, Title) VALUES (3, 'New');
+COMMIT;
+↓
+T1
+SELECT Title FROM Articles;
+Newが含まれる
+
+回答2-2-1
+楽観ロックを利用する
+
+回答2-2-2
+取得時に該当レコードをロックして決済処理を行った後ステータスを変更する
+
+回答2-2-3
+外部APIを用いた決済を先に行い決済に失敗した場合は永続化を行わない
+
+回答3
+ISOLATION LEVELを上げると何が犠牲になるでしょうか
