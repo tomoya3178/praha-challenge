@@ -24,7 +24,7 @@ describe('ActivateMemberUseCase', () => {
   let mockTeamRepository: jest.Mocked<TeamRepositoryInterface>;
   let mockTransactionManager: jest.Mocked<TransactionManagerInterface>;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       providers: [
         ActivateMemberUseCase,

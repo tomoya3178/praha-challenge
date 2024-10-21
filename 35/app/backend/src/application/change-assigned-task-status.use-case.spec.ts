@@ -14,7 +14,7 @@ const memberRepositoryMock = {
 describe('change assigned task status', () => {
   let useCase: ChangeAssignedTaskStatusUseCase;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module = await Test.createTestingModule({
       providers: [
         ChangeAssignedTaskStatusUseCase,
