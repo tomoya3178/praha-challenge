@@ -11,7 +11,7 @@ describe('AddTaskUseCase', () => {
   let useCase: AddTaskUseCase;
   let taskRepositoryMock: jest.Mocked<TaskRepositoryInterface>;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     taskRepositoryMock = {
       add: jest.fn(),
       findByIds: jest.fn(),
