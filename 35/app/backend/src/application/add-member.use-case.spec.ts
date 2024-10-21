@@ -5,57 +5,66 @@ import { Member } from 'src/domain/member';
 import { MemberService } from 'src/domain/member.service';
 import { Name as PairName, Pair } from 'src/domain/pair';
 import { Name as TeamName, Team } from 'src/domain/team';
-import { TRANSACTION_MANAGER_TOKEN } from '../domain/transaction-manager.interface';
-import { MEMBER_REPOSITORY_TOKEN } from '../domain/member.repository.interface';
-import { TEAM_REPOSITORY_TOKEN } from '../domain/team.repository.interface';
-
-const transactionManagerMock = {
-  execute: jest.fn(),
-};
-
-const memberServiceMock = {
-  emailExists: jest.fn(),
-};
-
-const memberRepositoryMock = {
-  add: jest.fn(),
-  findByEmail: jest.fn(),
-  findById: jest.fn(),
-  update: jest.fn(),
-};
-
-const teamRepositoryMock = {
-  findById: jest.fn(),
-  update: jest.fn(),
-};
+import {
+  TRANSACTION_MANAGER_TOKEN,
+  TransactionManagerInterface,
+} from '../domain/transaction-manager.interface';
+import {
+  MEMBER_REPOSITORY_TOKEN,
+  MemberRepositoryInterface,
+} from '../domain/member.repository.interface';
+import {
+  TEAM_REPOSITORY_TOKEN,
+  TeamRepositoryInterface,
+} from '../domain/team.repository.interface';
 
 describe('add member', () => {
   let useCase: AddMemberUseCase;
+  let transactionManagerMock: jest.Mocked<TransactionManagerInterface>;
+  let memberServiceMock: jest.Mocked<MemberService>;
+  let memberRepositoryMock: jest.Mocked<MemberRepositoryInterface>;
+  let teamRepositoryMock: jest.Mocked<TeamRepositoryInterface>;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module = await Test.createTestingModule({
       providers: [
         AddMemberUseCase,
         {
           provide: MemberService,
-          useValue: memberServiceMock,
+          useValue: {
+            emailExists: jest.fn(),
+          },
         },
         {
           provide: TRANSACTION_MANAGER_TOKEN,
-          useValue: transactionManagerMock,
+          useValue: {
+            execute: jest.fn(),
+          },
         },
         {
           provide: MEMBER_REPOSITORY_TOKEN,
-          useValue: memberRepositoryMock,
+          useValue: {
+            add: jest.fn(),
+            findByEmail: jest.fn(),
+            findById: jest.fn(),
+            update: jest.fn(),
+          },
         },
         {
           provide: TEAM_REPOSITORY_TOKEN,
-          useValue: teamRepositoryMock,
+          useValue: {
+            findById: jest.fn(),
+            update: jest.fn(),
+          },
         },
       ],
     }).compile();
 
     useCase = module.get(AddMemberUseCase);
+    transactionManagerMock = module.get(TRANSACTION_MANAGER_TOKEN);
+    memberServiceMock = module.get(MemberService);
+    memberRepositoryMock = module.get(MEMBER_REPOSITORY_TOKEN);
+    teamRepositoryMock = module.get(TEAM_REPOSITORY_TOKEN);
   });
 
   test('happy path', async () => {

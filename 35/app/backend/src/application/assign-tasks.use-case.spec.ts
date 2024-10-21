@@ -18,7 +18,7 @@ describe('AssignTasksUseCase', () => {
   let mockMemberRepository: jest.Mocked<MemberRepositoryInterface>;
   let mockTaskRepository: jest.Mocked<TaskRepositoryInterface>;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleRef: TestingModule = await Test.createTestingModule({
       providers: [
         AssignTasksUseCase,
